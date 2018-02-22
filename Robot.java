@@ -1,3 +1,5 @@
+
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -13,11 +15,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.DriverStation;
-import org.usfirst.frc.team7153.robot.commands.ExampleCommand;
 import org.usfirst.frc.team7153.robot.subsystems.*;
 
 import org.usfirst.frc.team7153.robot.autocommands.*;
@@ -42,8 +41,7 @@ public class Robot extends TimedRobot {
 	public static IntakeMotorsSystem intakemotors = new IntakeMotorsSystem();
 	public static GrabberSystem grabbersys = new GrabberSystem();
 	public static OI m_oi;
-	double autoWaitTime;
-	double autoDriveTime;
+	
 	//Ultrasonic ultra = new Ultrasonic(1,1); 
 	
 	Command m_autonomousCommand;
@@ -57,9 +55,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		//m_chooser.addDefault("Default Auto", new DoAbsolutelyNothing_IDKWhyImEvenHereBro());
-		//m_chooser.addObject("Cross Baseline Straight Starting From Either Left or Right", new CrossBaselineFromLeftRight());
-		//m_chooser.addObject("Cross Baseline straight Starting from the center", new CrossBaselineFromCenter_90());
+		m_chooser.addDefault("Default Auto", new DoAbsolutelyNothing_IDKWhyImEvenHereBro());
+		m_chooser.addObject("Cross Baseline Straight Starting From Either Left or Right", new CrossBaselineFromLeftRight());
+		m_chooser.addObject("Cross Baseline straight Starting from the center", new CrossBaselineFromCenter_90());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 		CameraServer.getInstance().startAutomaticCapture();
@@ -156,7 +154,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("ThrottleInput:",Robot.m_oi.Forward());
 		SmartDashboard.putNumber("Speed of the arm motor:", Robot.m_oi.ArmLevel());
 		
-		SmartDashboard.putNumber("Turning Value", Robot.gyro.getTurningValue());
+		SmartDashboard.putNumber("Height:", Robot.encoder.getHeight());
 		SmartDashboard.putNumber("POV:", Robot.m_oi.POVvalue());
 		//SmartDashboard.putNumber("LeftDist:", Robot.encoder.getLeftDist());
 		//SmartDashboard.putNumber("RightDist", Robot.encoder.getRightDist());
