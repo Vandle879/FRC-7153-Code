@@ -8,6 +8,8 @@
 package org.usfirst.frc.team7153.robot;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team7153.robot.commands.*;
 
 /**
@@ -20,9 +22,12 @@ public class OI {
 	
 	Joystick Gamepad = new Joystick(3);
 	Joystick Extreme3DPro = new Joystick(0);
-
-	
-	
+	double rangeF;
+	double rangeB;
+	double deltaF;
+	double deltaB;
+	double limitedJoystick=0.0;
+	double limit = 0.05;
 	public OI(){
 		JoystickButton HSButton= new JoystickButton(Gamepad,4);
 		JoystickButton LSButton= new JoystickButton(Gamepad,1);
@@ -50,8 +55,8 @@ public class OI {
 
 		 GrabberOpen.toggleWhenPressed(new GrabberOpen());
 		 GrabberClose.toggleWhenPressed(new GrabberClose());
-		 Intake.toggleWhenPressed(new Intake());
-		 ShootTheCUBE.toggleWhenPressed(new ShootTheCUBE());
+		 Intake.toggleWhenActive(new Intake());
+		 ShootTheCUBE.toggleWhenActive(new ShootTheCUBE());
 	}
 		
 	
@@ -62,11 +67,39 @@ public class OI {
 	Joystick rightDriverstick = new Joystick(1);
 	*/
 	public double Forward() {
-		return Gamepad.getRawAxis(3);
+		rangeF=Gamepad.getRawAxis(3);
+		deltaF = Math.abs(rangeF)-limitedJoystick;
+		if (deltaF >limit) {
+			deltaF = limit;
+			limitedJoystick +=deltaF;
+			SmartDashboard.putString("Forward Value", ""+limitedJoystick);
+			return limitedJoystick;
+			
+		}
+		else {
+			limitedJoystick +=deltaF;
+			SmartDashboard.putString("Forward Value", ""+limitedJoystick);
+			return limitedJoystick;
+		}
+		
 	}
 	
 	public double Backward() {
-		return Gamepad.getRawAxis(2);
+		rangeB= Gamepad.getRawAxis(2);
+		
+		deltaB = Math.abs(rangeB)-limitedJoystick;
+		if (deltaB >limit) {
+			deltaB = limit;
+			limitedJoystick -=deltaB;
+			SmartDashboard.putString("Backward Value", ""+limitedJoystick);
+			return limitedJoystick;
+			
+		}
+		else {
+			limitedJoystick -=deltaB;
+			SmartDashboard.putString("Backward Value", ""+limitedJoystick);
+			return limitedJoystick;
+		}
 	}
 	
 	public boolean LowSpeed() {
